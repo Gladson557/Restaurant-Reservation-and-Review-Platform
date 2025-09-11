@@ -21,3 +21,4 @@ export default function SearchBar({ initial = "", onSearch }) {
     </form>
   );
 }
+

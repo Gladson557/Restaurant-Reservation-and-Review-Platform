@@ -1,6 +1,6 @@
 // src/pages/Home.jsx
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import RestaurantCard from "../components/RestaurantCard";
 import SearchBar from "../components/SearchBar";
 import FiltersPanel from "../components/FiltersPanel";
@@ -33,7 +33,7 @@ export default function Home() {
           limit,
         };
         console.log("calling search", params)
-        const res = await axios.get("http://localhost:5000/api/restaurants/search", { params });
+        const res = await api.get("/restaurants/search", { params });
         setRestaurants(res.data.data || []);
         setMeta(res.data.meta || { page: 1, pages: 1, limit });
       } catch (err) {
@@ -124,3 +124,4 @@ export default function Home() {
     </div>
   );
 }
+

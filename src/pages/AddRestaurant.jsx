@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 export default function AddRestaurant() {
   const [name, setName] = useState("");
@@ -12,8 +12,8 @@ export default function AddRestaurant() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:5000/api/restaurants",
+      await api.post(
+        "/restaurants",
         { name, cuisineType, location, priceRange, contact },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -82,3 +82,4 @@ export default function AddRestaurant() {
     </div>
   );
 }
+

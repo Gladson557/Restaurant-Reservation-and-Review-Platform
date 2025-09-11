@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 export default function MyReviews() {
   const [reviews, setReviews] = useState([]);
@@ -12,7 +12,7 @@ export default function MyReviews() {
   const fetchReviews = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/reviews/my", {
+      const res = await api.get("/reviews/my", {
         headers: { Authorization: `Bearer ${token}` },
       });
       console.log("My reviews API response:", res.data);
@@ -31,7 +31,7 @@ export default function MyReviews() {
     if (!window.confirm("Are you sure you want to delete this review?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/reviews/${id}`, {
+      await api.delete(`/reviews/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setReviews((prev) => prev.filter((r) => r._id !== id));
@@ -53,8 +53,8 @@ export default function MyReviews() {
   const saveEdit = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:5000/api/reviews/${id}`,
+      await api.put(
+        `/reviews/${id}`,
         {
           comment,
           rating: Number(rating),
@@ -183,3 +183,4 @@ export default function MyReviews() {
     </div>
   );
 }
+

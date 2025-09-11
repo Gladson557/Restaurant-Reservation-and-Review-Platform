@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 import { Link } from "react-router-dom";
 
 export default function OwnerRestaurants() {
@@ -17,7 +17,7 @@ export default function OwnerRestaurants() {
   const fetchRestaurants = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/restaurants/my", {
+      const res = await api.get("/restaurants/my", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRestaurants(res.data);
@@ -34,7 +34,7 @@ export default function OwnerRestaurants() {
   const deleteRestaurant = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/restaurants/${id}`, {
+      await api.delete(`/restaurants/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRestaurants(restaurants.filter((r) => r._id !== id));
@@ -60,8 +60,8 @@ export default function OwnerRestaurants() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:5000/api/restaurants/${editingId}`,
+      await api.put(
+        `/restaurants/${editingId}`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -189,3 +189,4 @@ export default function OwnerRestaurants() {
     </div>
   );
 }
+

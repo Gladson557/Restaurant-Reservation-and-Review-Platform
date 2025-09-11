@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import OwnerResponseForm from "../components/OwnerResponseForm";
 import { useReservationsSocket } from "../hooks/useReservationsSocket";
 
@@ -24,10 +24,10 @@ export default function RestaurantDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/restaurants/${id}`);
+        const res = await api.get(`/restaurants/${id}`);
         setRestaurant(res.data);
 
-        const revRes = await axios.get(`http://localhost:5000/api/reviews/${id}`);
+        const revRes = await api.get(`/reviews/${id}`);
         setReviews(revRes.data);
       } catch (err) {
         console.error("Failed to load restaurant details", err);
@@ -40,7 +40,7 @@ export default function RestaurantDetails() {
   const fetchAvailability = async (forDate, forTime) => {
     if (!forDate || !forTime) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/restaurants/${id}/availability`, {
+      const res = await api.get(`/restaurants/${id}/availability`, {
         params: { date: forDate, time: forTime },
       });
       setAvailability(res.data);
@@ -74,7 +74,7 @@ export default function RestaurantDetails() {
         return;
       }
 
-      const availRes = await axios.get(`http://localhost:5000/api/restaurants/${id}/availability`, {
+      const availRes = await api.get(`/restaurants/${id}/availability`, {
         params: { date, time },
       });
       const avail = availRes.data?.available ?? null;
@@ -85,8 +85,8 @@ export default function RestaurantDetails() {
         return;
       }
 
-      await axios.post(
-        "http://localhost:5000/api/reservations",
+      await api.post(
+        "/reservations",
         { restaurant: id, date, time, partySize },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -116,7 +116,7 @@ export default function RestaurantDetails() {
       formData.append("comment", comment);
       photos.forEach((p) => formData.append("photos", p));
 
-      await axios.post("http://localhost:5000/api/reviews", formData, {
+      await api.post("/reviews", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -127,7 +127,7 @@ export default function RestaurantDetails() {
       setRating(5);
       setPhotos([]);
 
-      const revRes = await axios.get(`http://localhost:5000/api/reviews/${id}`);
+      const revRes = await api.get(`/reviews/${id}`);
       setReviews(revRes.data);
     } catch (err) {
       console.error("Review error:", err.response?.data || err.message);
@@ -224,3 +224,4 @@ export default function RestaurantDetails() {
     </div>
   );
 }
+

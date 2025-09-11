@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import OwnerResponseForm from "../components/OwnerResponseForm"; // ✅ import here
 
 export default function OwnerReviews() {
@@ -10,7 +10,7 @@ export default function OwnerReviews() {
   const fetchReviews = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:5000/api/reviews/${id}`, {
+      const res = await api.get(`/reviews/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setReviews(res.data);
@@ -67,3 +67,4 @@ export default function OwnerReviews() {
     </div>
   );
 }
+

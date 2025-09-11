@@ -1,6 +1,6 @@
 // src/pages/OwnerReservations.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 
 
@@ -32,7 +32,7 @@ export default function OwnerReservations() {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.get("http://localhost:5000/api/reservations/owner", axiosConfig);
+      const res = await api.get("/reservations/owner", axiosConfig);
       setReservations(res.data || []);
     } catch (err) {
       console.error("Failed to fetch owner reservations", err);
@@ -61,8 +61,8 @@ export default function OwnerReservations() {
     setActionLoadingId(id);
     try {
       // Uses backend endpoint: PUT /api/reservations/:id/status  { status: "confirmed" }
-      const res = await axios.put(
-        `http://localhost:5000/api/reservations/${id}/status`,
+      const res = await api.put(
+        `/reservations/${id}/status`,
         { status: newStatus },
         axiosConfig
       );
@@ -82,7 +82,7 @@ export default function OwnerReservations() {
     setActionLoadingId(id);
     try {
       // If backend has PUT /api/reservations/:id/cancel:
-      await axios.put(`http://localhost:5000/api/reservations/${id}/cancel`, {}, axiosConfig);
+      await api.put(`/reservations/${id}/cancel`, {}, axiosConfig);
       // update locally
       setReservations((prev) => prev.map((p) => (p._id === id ? { ...p, status: "cancelled" } : p)));
     } catch (err) {
@@ -111,7 +111,7 @@ export default function OwnerReservations() {
     setActionLoadingId(editing._id);
     try {
       // Backend endpoint: PUT /api/reservations/:id body { date, time, partySize }
-      const res = await axios.put(`http://localhost:5000/api/reservations/${editing._id}`, editForm, axiosConfig);
+      const res = await api.put(`/reservations/${editing._id}`, editForm, axiosConfig);
       // Replace updated reservation in list
       setReservations((prev) => prev.map((r) => (r._id === editing._id ? res.data : r)));
       closeEdit();
@@ -273,3 +273,4 @@ export default function OwnerReservations() {
     </div>
   );
 }
+

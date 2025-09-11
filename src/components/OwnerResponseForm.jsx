@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../utils/api";
 
 export default function OwnerResponseForm({ reviewId }) {
   const [response, setResponse] = useState("");
@@ -8,8 +8,8 @@ export default function OwnerResponseForm({ reviewId }) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:5000/api/reviews/${reviewId}/respond`,
+      await api.put(
+        `/reviews/${reviewId}/respond`,
         { response },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -35,3 +35,4 @@ export default function OwnerResponseForm({ reviewId }) {
     </form>
   );
 }
+
